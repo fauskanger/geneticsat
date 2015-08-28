@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Python 3.4
 import os
-from collections import OrderedDict
 from operator import itemgetter
 from app import seeded_random
 from app.environment import Environment, DifficultEnvironment

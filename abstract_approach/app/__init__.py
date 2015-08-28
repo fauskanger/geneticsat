@@ -2,7 +2,6 @@
 # Main entry for application
 from random import Random
 from time import time
-import math
 
 seeded_random = Random()
 seeded_random.seed(time())
