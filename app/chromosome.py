@@ -8,17 +8,13 @@ class Chromosome(object):
     def __init__(self, genes=None, length=8):
         self._length = length
         self._genes = self._create_random_genes() if not genes else genes
-        verified = self.verify()
-        assert verified
+        assert self.verify()
 
     def __repr__(self):
         return 'Chromosome {}'.format(self.genes())
 
     def verify(self):
-        test = self._length == len(self._genes)
-        if not test:
-            print('wow, uneven!')
-        return test
+        return self._length == len(self._genes)
 
     def length(self):
         return len(self._genes)
