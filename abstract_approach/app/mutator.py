@@ -24,6 +24,9 @@ class PerGeneMutator(BaseMutator):
 
 
 class OneGeneChanceMutator(BaseMutator):
+    def __init__(self, mutation_rate=0.1):
+        super().__init__(mutation_rate)
+
     def mutate(self, genes):
         if not self.is_mutating():
             return genes

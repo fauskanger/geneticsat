@@ -11,10 +11,9 @@ from app.mutator import PerGeneMutator, GeneCountRatioMutator, OneGeneChanceMuta
 
 class Evolution(object):
     def __init__(self):
-        self._initial_population_size = 4
+        self._initial_population_size = 8
         self._include_parents = True
-        self._birthrate = int(self._initial_population_size/2)  # Number of children per parent chromosome
-        self._birthrate -= 1 if self._include_parents else 0
+        self._birthrate = 2  # Number of children per parent chromosome
         self._generation = -1                                   # First generation = 0, set in _new_generation(...)
 
         self._chromosomes = []
@@ -119,10 +118,13 @@ class Evolution(object):
         parent_bs = [parent for parent in parent_chromosomes if parent not in parent_as]
 
         new_genes = []
+        offspring_per_parent = self._birthrate - (1 if self._include_parents else 0)
         for i, parent_a in enumerate(parent_as):
             parent_b = parent_bs[i]
-            for _ in range(self._birthrate):
+            for _ in range(offspring_per_parent):
                 new_genes.extend(self._random_crossover(parent_a, parent_b))
+        if self._include_parents:
+            new_genes.extend([parent.genes() for parent in parent_chromosomes])
         return new_genes
 
     def _random_crossover(self, chromosome_a, chromosome_b, n_cross_points=2):
