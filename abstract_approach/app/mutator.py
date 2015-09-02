@@ -13,7 +13,7 @@ class Mutator(object):
         if self.mutate_roll_per_gene:
             return [gene if seeded_random.random() < self.mutation_rate else not gene for gene in genes]
         n = len(genes)
-        to_mutate = seeded_random.sample(range(n), n * self.mutation_rate)
+        to_mutate = seeded_random.sample(range(n), max(n * self.mutation_rate, 1))
         for i in to_mutate:
             genes[i] = not genes[i]
         return genes

@@ -14,6 +14,7 @@ def run():
     best_fitness = evolution.best_fitness()
     previous_avg_fitness = evolution.avg_fitness()
     print('Avg. fitness: {:.2f}%'.format(evolution.avg_fitness()*100))
+
     diff_avg_fitness = 1.0
     recession_count = 0
     while best_fitness < 1.0 and recession_count < 10:
@@ -23,6 +24,7 @@ def run():
         best_fitness = evolution.best_fitness()
         avg_fitness = evolution.avg_fitness()
         diff_avg_fitness = avg_fitness - previous_avg_fitness
+
         previous_avg_fitness = avg_fitness
         print('Avg. fitness: {:.3f}% ({:.3f}% change)'.format(avg_fitness*100, diff_avg_fitness*100))
 
