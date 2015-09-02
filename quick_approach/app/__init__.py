@@ -49,7 +49,7 @@ def evolve(chromosomes):
 
 
 def crossover(chromosome_a, chromosome_b):
-    cross_point = [1, 3]  # sorted(random.sample(range(8), 2))
+    cross_point = sorted(random.sample(range(8), 2))
     start = cross_point[0]
     end = cross_point[1]
     new_a = chromosome_a[:start]
