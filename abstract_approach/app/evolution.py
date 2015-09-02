@@ -6,13 +6,15 @@ from app import seeded_random
 from app.environment import Environment, DifficultEnvironment
 from app.chromosome import Chromosome
 from app.selector import Selector, NormalizedRatioSelector
-from app.mutator import Mutator
+from app.mutator import PerGeneMutator, GeneCountRatioMutator, OneGeneChanceMutator
 
 
 class Evolution(object):
     def __init__(self):
         self._initial_population_size = 4
+        self._include_parents = True
         self._birthrate = int(self._initial_population_size/2)  # Number of children per parent chromosome
+        self._birthrate -= 1 if self._include_parents else 0
         self._generation = -1                                   # First generation = 0, set in _new_generation(...)
 
         self._chromosomes = []
@@ -21,8 +23,8 @@ class Evolution(object):
         self._chromosome_counter = dict()
 
         self._environment = DifficultEnvironment()
-        self._selector = Selector()
-        self._mutator = Mutator()
+        self._selector = NormalizedRatioSelector()
+        self._mutator = OneGeneChanceMutator()
 
         self._create_initial_population()
 
