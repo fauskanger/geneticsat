@@ -24,6 +24,8 @@ class Environment(object):
 
     def chromosome_fitness(self, chromosome):
         conjunctions = self._safe_get_clauses(chromosome)
+        if not conjunctions:
+            return 0
         fitness = sum(1 for premise in conjunctions if premise)
         return fitness/len(conjunctions)
 
