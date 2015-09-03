@@ -11,7 +11,7 @@ class BaseMutator(object):
     def mutate(self, genes):
         return genes
 
-    def is_mutating(self):
+    def _is_mutating(self):
         return seeded_random.random() < self.mutation_rate
 
 
@@ -20,7 +20,7 @@ class PerGeneMutator(BaseMutator):
         super().__init__(mutation_rate)
 
     def mutate(self, genes):
-        return [gene if self.is_mutating() else not gene for gene in genes]
+        return [gene if self._is_mutating() else not gene for gene in genes]
 
 
 class OneGeneChanceMutator(BaseMutator):
@@ -28,7 +28,7 @@ class OneGeneChanceMutator(BaseMutator):
         super().__init__(mutation_rate)
 
     def mutate(self, genes):
-        if not self.is_mutating():
+        if not self._is_mutating():
             return genes
         mutant = seeded_random.choice(range(len(genes)))
         genes[mutant] = not genes[mutant]
@@ -36,11 +36,13 @@ class OneGeneChanceMutator(BaseMutator):
 
 
 class GeneCountRatioMutator(BaseMutator):
+    def __init__(self, mutation_rate=0.1):
+        super().__init__(mutation_rate)
+
     def mutate(self, genes):
         n = len(genes)
         to_mutate = seeded_random.sample(range(n), max(n * self.mutation_rate, 1))
         for i in to_mutate:
             genes[i] = not genes[i]
         return genes
-
 

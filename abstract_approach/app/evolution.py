@@ -23,7 +23,7 @@ class Evolution(object):
 
         self._environment = DifficultEnvironment()
         self._selector = NormalizedRatioSelector()
-        self._mutator = OneGeneChanceMutator()
+        self._mutator = OneGeneChanceMutator(mutation_rate=0.2)
 
         self._create_initial_population()
 
@@ -49,7 +49,7 @@ class Evolution(object):
         sorted_chromosomes = self.sorted_chromosomes()
         try:
             for chromosome, fitness in sorted_chromosomes:
-                print('Fitness: {} - Chromosome: {}'.format(fitness, chromosome))
+                print('Fitness: {:3f} - {}'.format(fitness, chromosome))
         except ValueError as e:
             print('error: {}'.format(e))
 
@@ -61,13 +61,17 @@ class Evolution(object):
         selected = self._selector.select(self.sorted_chromosomes(), k=self._initial_population_size / 2)
         new_genes = self._crossover(selected)
         mutated_genes = [self._mutator.mutate(genes) for genes in new_genes]
-        self._new_generation_from_genes(mutated_genes)
+        next_generation = mutated_genes
+        if self._include_parents:
+            next_generation.extend([parent.genes() for parent in selected])
+        self._new_generation_from_genes(next_generation)
 
     def best_chromosome(self):
         sorteds = self.sorted_chromosomes()
-        if not sorteds:
+        try:
+            return sorteds[0][0]
+        except (IndexError, KeyError):
             return None
-        return sorteds[0][0]
 
     def best_fitness(self):
         sorteds = self.sorted_chromosomes()
@@ -123,8 +127,6 @@ class Evolution(object):
             parent_b = parent_bs[i]
             for _ in range(offspring_per_parent):
                 new_genes.extend(self._random_crossover(parent_a, parent_b))
-        if self._include_parents:
-            new_genes.extend([parent.genes() for parent in parent_chromosomes])
         return new_genes
 
     def _random_crossover(self, chromosome_a, chromosome_b, n_cross_points=2):
