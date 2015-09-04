@@ -31,3 +31,4 @@ class NormalizedRatioSelector(Selector):
                 if acc > random_threshold and not (chromosome in selected and self._unique):
                     selected.append(chromosome)
                     break
+        return selected

@@ -11,7 +11,7 @@ class Chromosome(object):
         assert self.verify()
 
     def __repr__(self):
-        return 'Chromosome {}'.format(self.genes())
+        return 'Chromosome {}'.format([1 if gene else 0 for gene in self.genes()])
 
     def verify(self):
         return self._length == len(self._genes)
